@@ -646,9 +646,12 @@ function deleteSessionSnapshots(root, sessionId) {
     }
     try {
       // rmSync never follows symlinks: a link is unlinked, a directory is
-      // removed with its links (not their targets).
+      // removed with its links (not their targets). Node >= 24 rejects the
+      // non-recursive rmdir(2) path with ERR_FS_EISDIR when the link points
+      // at a directory, so links need recursive unlinking as well — still
+      // link-only, never the target tree.
       fs.rmSync(target, {
-        recursive: stat.isDirectory(),
+        recursive: stat.isDirectory() || stat.isSymbolicLink(),
         force: true,
         maxRetries: LOCK_RETRIES,
         retryDelay: LOCK_RETRY_DELAY_MS,
