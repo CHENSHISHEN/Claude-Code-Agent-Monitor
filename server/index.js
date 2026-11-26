@@ -577,6 +577,13 @@ function startBackgroundServices() {
   } catch (err) {
     console.warn("Codex session sync failed to start:", err.message);
   }
+  // Antigravity (agy) has no hooks; its summary store is polled read-only so
+  // sessions surface alongside Claude/Codex with provider='agy'.
+  try {
+    startAgySessionSync(broadcast);
+  } catch (err) {
+    console.warn("Antigravity session sync failed to start:", err.message);
+  }
   // A new Codex TUI has no provider session id until its first prompt. Keep a
   // process-only card in memory for that brief window. Durable rollout/state
   // ingestion remains unchanged and takes over as soon as Codex exposes an id.
@@ -1783,11 +1790,49 @@ if (require.main === module) {
   // just this standalone path. See autoImportLegacySessions().
 }
 
+/**
+ * Periodic read-only poll of the Antigravity (agy) summary store
+ * (`~/.gemini/antigravity-cli/conversation_summaries.db`). Antigravity has no
+ * hook system, so this mirror is the only ingestion path; per-row
+ * fingerprints inside lib/agy-ingest.js keep unchanged passes no-ops. A first
+ * pass runs shortly after boot; thereafter every DASHBOARD_AGY_SYNC_MS
+ * (default 5s). Set the interval to 0 to disable. Unref'd so it never blocks
+ * shutdown.
+ */
+function startAgySessionSync(broadcast, options = {}) {
+  const POLL_MS = process.env.DASHBOARD_AGY_SYNC_MS
+    ? Number(process.env.DASHBOARD_AGY_SYNC_MS)
+    : 5_000;
+  if (!Number.isFinite(POLL_MS) || POLL_MS <= 0) return;
+  const dbModule = options.dbModule || require("./db");
+  const { syncAgySessions } = require("./lib/agy-ingest");
+
+  const tick = () => {
+    try {
+      const changed = syncAgySessions(dbModule, options.syncOptions);
+      for (const result of changed) {
+        if (!result.session) continue;
+        broadcast(result.created ? "session_created" : "session_updated", result.session);
+        if (result.agent) {
+          broadcast(result.created ? "agent_created" : "agent_updated", result.agent);
+        }
+      }
+    } catch (err) {
+      console.warn("Antigravity session sync tick failed:", err?.message || err);
+    }
+  };
+  const bootTimer = setTimeout(tick, options.bootDelayMs ?? 500);
+  if (bootTimer.unref) bootTimer.unref();
+  const pollTimer = setInterval(tick, POLL_MS);
+  if (pollTimer.unref) pollTimer.unref();
+}
+
 module.exports = {
   createApp,
   startServer,
   startBackgroundServices,
   startCursorSessionSync,
+  startAgySessionSync,
   codexHomeChangeTriggersSweep,
   createIngestRetryBudget,
   createCodexProbeFence,

@@ -633,6 +633,8 @@ flowchart LR
 | `DASHBOARD_CURSOR_SYNC_MS` | `5000` | 基于指纹的 Cursor 安全轮询。设为 `0` 时监听器仍保持活动。 |
 | `DASHBOARD_CODEX_HOME` | `CODEX_HOME` 或 `~/.codex` | Codex 状态根目录。Settings 会持久化覆盖值、重新启用监听并立即扫描。 |
 | `DASHBOARD_CODEX_SYNC_MS` | `4000` | Codex rollout 安全轮询。设为 `0` 时 Hook 和监听器仍保持活动。 |
+| `DASHBOARD_AGY_HOME` | `~/.gemini/antigravity-cli` | Antigravity（agy）数据主目录，只读轮询其中的会话摘要库。 |
+| `DASHBOARD_AGY_SYNC_MS` | `5000` | Antigravity（agy）摘要库轮询。Antigravity 没有 Hook，设为 `0` 将完全停用 agy 会话接入。 |
 | `DASHBOARD_CODEX_MAX_ATTEMPTS` | `5` | 一个未变化且无法读取的 rollout 的尝试次数，包括首次尝试。大小或 mtime 变化会重置预算；耗尽时只记录一次。 |
 | `DASHBOARD_CODEX_HOOK_IDLE_SECONDS` | `60` | 当已报告结束的 `stop` 从未收到 `SessionEnd` 时，完成仅依赖 Hook 的 Codex 会话，例如 `codex exec --ephemeral`。单纯静默永远不会触发。 |
 | `DASHBOARD_TASK_SUMMARY_TTL_MS` | `2000` | 任务摘要和 `todo_snapshot` 的过期仍可服务窗口。追加内容会增量解析；增长超过 32 MiB 时会从新的尾部重新开始。`0` 会解析每次追加。 |

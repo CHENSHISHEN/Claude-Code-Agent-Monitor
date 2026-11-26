@@ -631,6 +631,8 @@ flowchart LR
 | `DASHBOARD_CURSOR_SYNC_MS` | `5000` | Poll an toàn Cursor có fingerprint. Watcher vẫn hoạt động khi `0` tắt polling. |
 | `DASHBOARD_CODEX_HOME` | `CODEX_HOME` hoặc `~/.codex` | Thư mục gốc trạng thái Codex. Cài đặt lưu override, bật lại watcher và quét ngay. |
 | `DASHBOARD_CODEX_SYNC_MS` | `4000` | Poll an toàn rollout Codex. Hook và watcher vẫn hoạt động khi đặt `0`. |
+| `DASHBOARD_AGY_HOME` | `~/.gemini/antigravity-cli` | Thư mục dữ liệu Antigravity (agy), được poll chỉ-đọc để lấy tóm tắt phiên. |
+| `DASHBOARD_AGY_SYNC_MS` | `5000` | Poll kho tóm tắt Antigravity (agy). Antigravity không có hook, nên `0` tắt hẳn việc nhập phiên agy. |
 | `DASHBOARD_CODEX_MAX_ATTEMPTS` | `5` | Số lần thử cho một rollout không đọc được và không đổi, tính cả lần đầu. Thay đổi kích thước hoặc mtime đặt lại ngân sách; khi hết chỉ log một lần. |
 | `DASHBOARD_CODEX_HOOK_IDLE_SECONDS` | `60` | Hoàn tất phiên Codex chỉ có hook, như `codex exec --ephemeral`, khi `stop` đã báo kết thúc nhưng không nhận `SessionEnd`. Chỉ im lặng thì không đủ điều kiện. |
 | `DASHBOARD_TASK_SUMMARY_TTL_MS` | `2000` | Cửa sổ serve-stale cho tóm tắt tác vụ và `todo_snapshot`. Phần nối thêm được phân tích tăng dần; tăng quá 32 MiB sẽ bắt đầu lại từ phần đuôi mới. `0` phân tích mỗi lần nối. |

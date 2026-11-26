@@ -630,6 +630,8 @@ flowchart LR
 | `DASHBOARD_CURSOR_SYNC_MS` | `5000` | Polling de seguridad de Cursor con fingerprint. Los watchers siguen activos cuando `0` desactiva el polling. |
 | `DASHBOARD_CODEX_HOME` | `CODEX_HOME` or `~/.codex` | Raíz del estado de Codex. Configuración conserva una sobreescritura, reactiva el watcher y explora de inmediato. |
 | `DASHBOARD_CODEX_SYNC_MS` | `4000` | Polling de seguridad para rollouts de Codex. Los hooks y watchers siguen activos cuando se configura en `0`. |
+| `DASHBOARD_AGY_HOME` | `~/.gemini/antigravity-cli` | Directorio de datos de Antigravity (agy), sondeado en solo lectura para resúmenes de sesiones. |
+| `DASHBOARD_AGY_SYNC_MS` | `5000` | Sondeo del almacén de resúmenes de Antigravity (agy). Antigravity no tiene hooks, así que `0` desactiva por completo la ingesta de sesiones de agy. |
 | `DASHBOARD_CODEX_MAX_ATTEMPTS` | `5` | Intentos para un rollout ilegible sin cambios, incluido el primero. Un cambio de tamaño o mtime reinicia el presupuesto. El agotamiento solo se registra una vez. |
 | `DASHBOARD_CODEX_HOOK_IDLE_SECONDS` | `60` | Completa sesiones de Codex basadas solo en hooks, como `codex exec --ephemeral`, cuando un `stop` que informa finalización nunca recibe `SessionEnd`. El silencio por sí solo nunca es suficiente. |
 | `DASHBOARD_TASK_SUMMARY_TTL_MS` | `2000` | Ventana de servicio obsoleto para resúmenes de tareas y `todo_snapshot`. Las adiciones se analizan de forma incremental. El crecimiento por encima de 32 MiB reinicia desde una cola nueva. `0` analiza cada adición. |

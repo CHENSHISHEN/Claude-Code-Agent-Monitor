@@ -631,6 +631,8 @@ flowchart LR
 | `DASHBOARD_CURSOR_SYNC_MS` | `5000` | Fingerprinted Cursor safety poll. Watchers stay active when `0` disables polling. |
 | `DASHBOARD_CODEX_HOME` | `CODEX_HOME` or `~/.codex` | Codex state root. Settings persists an override, rearms watching, and scans immediately. |
 | `DASHBOARD_CODEX_SYNC_MS` | `4000` | Codex rollout safety poll. Hooks and watchers remain active when set to `0`. |
+| `DASHBOARD_AGY_HOME` | `~/.gemini/antigravity-cli` | Antigravity (agy) data home polled read-only for session summaries. |
+| `DASHBOARD_AGY_SYNC_MS` | `5000` | Antigravity (agy) summary-store poll. Antigravity has no hooks, so `0` disables agy session ingestion entirely. |
 | `DASHBOARD_CODEX_MAX_ATTEMPTS` | `5` | Attempts for one unchanged unreadable rollout, including the first. A size or mtime change resets the budget; exhaustion logs once. |
 | `DASHBOARD_CODEX_HOOK_IDLE_SECONDS` | `60` | Completes hook-only Codex sessions, such as `codex exec --ephemeral`, when a reported-finished `stop` never receives `SessionEnd`. Silence alone never qualifies. |
 | `DASHBOARD_TASK_SUMMARY_TTL_MS` | `2000` | Serve-stale window for task summaries and `todo_snapshot`. Appends parse incrementally; growth over 32 MiB restarts from a fresh tail. `0` parses every append. |

@@ -1848,6 +1848,12 @@ const stmts = {
   insertCodexSession: db.prepare(
     "INSERT INTO sessions (id, name, status, cwd, model, provider, source, started_at, updated_at, metadata) VALUES (?, ?, ?, ?, ?, 'codex', ?, ?, ?, ?)"
   ),
+  // Antigravity (agy) sessions come from polling the summary store (see
+  // lib/agy-ingest.js); the fixed ended_at + card preview slots let one
+  // prepared statement cover the whole insert.
+  insertAgySession: db.prepare(
+    "INSERT INTO sessions (id, name, status, cwd, model, provider, source, started_at, ended_at, updated_at, metadata, card_prompt_preview) VALUES (?, ?, ?, ?, ?, 'agy', ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ', 'now'), ?, ?)"
+  ),
   updateSession: db.prepare(
     "UPDATE sessions SET name = COALESCE(?, name), status = COALESCE(?, status), ended_at = COALESCE(?, ended_at), metadata = COALESCE(?, metadata), updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ?"
   ),

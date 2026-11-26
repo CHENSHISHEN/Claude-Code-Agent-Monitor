@@ -633,6 +633,8 @@ flowchart LR
 | `DASHBOARD_CURSOR_SYNC_MS` | `5000` | Fingerprint 기반 Cursor 안전 poll입니다. `0`으로 polling을 꺼도 watcher는 계속 작동합니다. |
 | `DASHBOARD_CODEX_HOME` | `CODEX_HOME` 또는 `~/.codex` | Codex 상태 root입니다. Settings에 override를 저장하면 watching을 다시 설정하고 즉시 스캔합니다. |
 | `DASHBOARD_CODEX_SYNC_MS` | `4000` | Codex rollout 안전 poll입니다. `0`으로 설정해도 Hook과 watcher는 계속 작동합니다. |
+| `DASHBOARD_AGY_HOME` | `~/.gemini/antigravity-cli` | 세션 요약을 읽기 전용으로 poll하는 Antigravity(agy) 데이터 홈입니다. |
+| `DASHBOARD_AGY_SYNC_MS` | `5000` | Antigravity(agy) 요약 저장소 poll입니다. Antigravity에는 hook이 없어 `0`으로 설정하면 agy 세션 수집이 완전히 비활성화됩니다. |
 | `DASHBOARD_CODEX_MAX_ATTEMPTS` | `5` | 변경되지 않고 읽을 수 없는 rollout 하나에 대한 시도 횟수이며 첫 시도를 포함합니다. Size나 mtime이 바뀌면 budget이 초기화되고, 모두 소진하면 한 번만 기록합니다. |
 | `DASHBOARD_CODEX_HOOK_IDLE_SECONDS` | `60` | 보고된 완료 `stop`이 `SessionEnd`를 받지 못했을 때 `codex exec --ephemeral` 같은 Hook-only Codex 세션을 완료합니다. 침묵만으로는 적용하지 않습니다. |
 | `DASHBOARD_TASK_SUMMARY_TTL_MS` | `2000` | Task summary와 `todo_snapshot`의 serve-stale window입니다. Append는 증분 파싱되고 32 MiB 이상 증가하면 새 tail에서 다시 시작합니다. `0`은 append마다 파싱합니다. |
